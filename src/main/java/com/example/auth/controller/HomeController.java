@@ -9,4 +9,9 @@ public class HomeController {
     public String home() {
         return "home"; // Это home.html в папке templates
     }
+
+    @GetMapping("/home-create-survey")
+    public String showCreateSurveyPage() {
+        return "create-survey"; // Отображаем страницу создания анкеты
+    }
 }

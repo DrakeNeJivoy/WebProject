@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание анкеты</title>
+</head>
+<body>
+<h1>Создание анкеты</h1>
+
+<!-- Форма создания анкеты -->
+<form action="/create-survey" method="post">
+    <label for="title">Название анкеты:</label>
+    <input type="text" id="title" name="title" required>
+    <button type="submit">Создать</button>
+</form>
+
+<!-- Форма добавления вопросов (отображается после создания анкеты) -->
+<div id="questionForm" style="display: none;">
+    <h2>Добавить вопрос</h2>
+    <form action="/add-question" method="post">
+        <input type="hidden" id="surveyId" name="surveyId">
+        <label for="questionText">Вопрос:</label>
+        <input type="text" id="questionText" name="questionText" required>
+
+        <label for="answer1">Ответ 1:</label>
+        <input type="text" id="answer1" name="answer1" required>
+
+        <label for="answer2">Ответ 2:</label>
+        <input type="text" id="answer2" name="answer2" required>
+
+        <button type="submit">Добавить вопрос</button>
+    </form>
+</div>
+
+<a href="/">Вернуться на главную</a>
+
+<script>
+    // Показывать форму добавления вопросов после создания анкеты
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('surveyId')) {
+        document.getElementById('questionForm').style.display = 'block';
+        document.getElementById('surveyId').value = params.get('surveyId');
+    }
+</script>
+
+</body>
+</html>

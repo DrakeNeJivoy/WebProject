@@ -34,11 +34,17 @@ public class AuthController {
         return "redirect:/login";
     }
 
+    @PostMapping("/rtlogin")
+    public String returntologin(@Valid @ModelAttribute("user") User user, BindingResult result) {
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String showLoginForm(@RequestParam(value = "error", required = false) String error,
                                 @RequestParam(value = "logout", required = false) String logout,
                                 Model model) {
         System.out.println("Открыта страница логина");
+
         if (error != null) {
             System.out.println("Ошибка входа!");
             model.addAttribute("errorMessage", "Неверное имя пользователя или пароль!");
@@ -47,6 +53,7 @@ public class AuthController {
             System.out.println("Выход выполнен");
             model.addAttribute("successMessage", "Вы успешно вышли из системы.");
         }
+
         return "login";
     }
 

@@ -26,9 +26,13 @@
 
 <form action="/login" method="post">
     <form id="loginForm" action="/login" method="post">
-        <form action="/login" method="post">
-            <input type="text" name="username" placeholder="Логин">
-            <input type="password" name="password" placeholder="Пароль">
+        <form method="post" action="/login">
+            <label>Email:</label>
+            <input type="text" name="email" required>
+
+            <label>Пароль:</label>
+            <input type="password" name="password" required>
+
             <button type="submit">Войти</button>
         </form>
 
