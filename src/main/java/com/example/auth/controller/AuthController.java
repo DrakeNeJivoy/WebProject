@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
@@ -34,7 +35,20 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(@RequestParam(value = "error", required = false) String error,
+                                @RequestParam(value = "logout", required = false) String logout,
+                                Model model) {
+        System.out.println("Открыта страница логина");
+        if (error != null) {
+            System.out.println("Ошибка входа!");
+            model.addAttribute("errorMessage", "Неверное имя пользователя или пароль!");
+        }
+        if (logout != null) {
+            System.out.println("Выход выполнен");
+            model.addAttribute("successMessage", "Вы успешно вышли из системы.");
+        }
         return "login";
     }
+
+
 }

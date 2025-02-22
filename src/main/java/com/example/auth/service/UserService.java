@@ -16,7 +16,7 @@ public class UserService {
     }
 
     public void registerUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Ошибка была тут
-        userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Хеширование пароля
+        userRepository.save(user);  // Сохранение пользователя
     }
 }

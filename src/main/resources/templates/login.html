@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Вход</title>
+    <style>
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .error { background-color: #ffcccc; color: #d8000c; }
+        .success { background-color: #ccffcc; color: #4f8a10; }
+    </style>
 </head>
 <body>
 <h2>Вход</h2>
-<form th:action="@{/login}" method="post">
-    <label>Email:</label>
-    <input type="text" name="username" required />
-    <br/>
 
-    <label>Пароль:</label>
-    <input type="password" name="password" required />
-    <br/>
+<div th:if="${errorMessage}" class="message error">
+    <p th:text="${errorMessage}"></p>
+</div>
 
-    <button type="submit">Войти</button>
+<div th:if="${successMessage}" class="message success">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<form action="/login" method="post">
+    <form id="loginForm" action="/login" method="post">
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Логин">
+            <input type="password" name="password" placeholder="Пароль">
+            <button type="submit">Войти</button>
+        </form>
+
+    </form>
+
+    <div id="message"></div> <!-- Сюда будем выводить сообщение -->
 </form>
-<a href="/register">Зарегистрироваться</a>
+
+
+<p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
 </body>
 </html>
