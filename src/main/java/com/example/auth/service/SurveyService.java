@@ -48,4 +48,12 @@ public class SurveyService {
 
         return survey;
     }
+
+    @Transactional
+    public List<Survey> getAllSurveys() {
+        List<Survey> surveys = surveyRepository.findAll();
+        System.out.println("Список анкет: " + surveys);  // Логируем анкеты
+        return surveys;
+    }
+
 }
