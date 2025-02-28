@@ -1,5 +1,7 @@
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\controller\AuthController.java
+C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\dto\QuestionRequest.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\model\Response.java
+C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\dto\SurveyRequest.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\repository\AnswerOptionRepository.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\SpringMailgunApp.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\service\UserService.java
@@ -17,4 +19,5 @@ C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\controlle
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\repository\UserRepository.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\service\SurveyService.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\controller\ProfileController.java
+C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\dto\AnswerOptionRequest.java
 C:\Users\Drake\Documents\git\WebProject\src\main\java\com\example\auth\model\User.java

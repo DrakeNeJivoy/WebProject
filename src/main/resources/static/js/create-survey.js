@@ -1,89 +1,80 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const surveyForm = document.getElementById("survey-form");
     const questionsContainer = document.getElementById("questions-container");
     const addQuestionButton = document.getElementById("add-question");
+    const surveyForm = document.getElementById("survey-form");
+
+    let questionCount = 0;
 
     addQuestionButton.addEventListener("click", function () {
-        addQuestion();
+        questionCount++;
+        const questionDiv = document.createElement("div");
+        questionDiv.classList.add("question");
+        questionDiv.innerHTML = `
+            <label for="question-${questionCount}">Вопрос:</label>
+            <input type="text" id="question-${questionCount}" name="questions[${questionCount}][text]" required>
+
+            <label>
+                <input type="checkbox" class="has-correct-answer" data-question="${questionCount}"> Есть правильный ответ
+            </label>
+
+            <div class="answers-container" id="answers-${questionCount}">
+                <button type="button" class="add-answer" data-question="${questionCount}">Добавить вариант ответа</button>
+            </div>
+        `;
+        questionsContainer.appendChild(questionDiv);
+    });
+
+    questionsContainer.addEventListener("click", function (event) {
+        if (event.target.classList.contains("add-answer")) {
+            const questionIndex = event.target.dataset.question;
+            const answersContainer = document.getElementById(`answers-${questionIndex}`);
+
+            const answerDiv = document.createElement("div");
+            answerDiv.classList.add("answer");
+            answerDiv.innerHTML = `
+                <input type="text" name="questions[${questionIndex}][answerOptions][]" required>
+                <input type="checkbox" class="correct-answer-checkbox" name="questions[${questionIndex}][correct]" value="2" style="display: none;">
+            `;
+            answersContainer.insertBefore(answerDiv, event.target);
+        }
+    });
+
+    questionsContainer.addEventListener("change", function (event) {
+        if (event.target.classList.contains("has-correct-answer")) {
+            const questionIndex = event.target.dataset.question;
+            const checkboxes = document.querySelectorAll(`#answers-${questionIndex} .correct-answer-checkbox`);
+            checkboxes.forEach(cb => cb.style.display = event.target.checked ? "inline-block" : "none");
+        }
     });
 
     surveyForm.addEventListener("submit", function (event) {
         event.preventDefault();
-        submitSurvey();
-    });
 
-    function addQuestion() {
-        const questionIndex = document.querySelectorAll(".question").length;
-        const questionDiv = document.createElement("div");
-        questionDiv.classList.add("question");
+        const surveyData = {
+            title: document.getElementById("survey-title").value,
+            questions: []
+        };
 
-        questionDiv.innerHTML = `
-            <input type="text" placeholder="Введите вопрос" class="question-text" required>
-            <div class="answers"></div>
-            <button type="button" class="add-answer">Добавить ответ</button>
-            <button type="button" class="remove-question">Удалить вопрос</button>
-        `;
-
-        questionsContainer.appendChild(questionDiv);
-
-        questionDiv.querySelector(".add-answer").addEventListener("click", function () {
-            addAnswer(questionDiv);
-        });
-
-        questionDiv.querySelector(".remove-question").addEventListener("click", function () {
-            questionDiv.remove();
-        });
-    }
-
-    function addAnswer(questionDiv) {
-        const answerDiv = document.createElement("div");
-        answerDiv.classList.add("answer");
-
-        answerDiv.innerHTML = `
-            <input type="text" placeholder="Введите вариант ответа" class="answer-text" required>
-            <select class="answer-status">
-                <option value="0" selected>Нет правильного ответа</option>
-                <option value="1">Неправильный</option>
-                <option value="2">Правильный</option>
-            </select>
-            <button type="button" class="remove-answer">Удалить</button>
-        `;
-
-        questionDiv.querySelector(".answers").appendChild(answerDiv);
-
-        answerDiv.querySelector(".remove-answer").addEventListener("click", function () {
-            answerDiv.remove();
-        });
-    }
-
-    function submitSurvey() {
-        const title = document.getElementById("survey-title").value;
-        const questions = [];
-
-        document.querySelectorAll(".question").forEach(questionDiv => {
-            const text = questionDiv.querySelector(".question-text").value;
+        document.querySelectorAll(".question").forEach((questionDiv, index) => {
+            const questionText = questionDiv.querySelector(`input[type="text"]`).value;
+            const hasCorrectAnswer = questionDiv.querySelector(".has-correct-answer").checked;
             const answerOptions = [];
 
             questionDiv.querySelectorAll(".answer").forEach(answerDiv => {
-                const answerText = answerDiv.querySelector(".answer-text").value;
-                const status = parseInt(answerDiv.querySelector(".answer-status").value, 10);
-
+                const answerText = answerDiv.querySelector("input[type='text']").value;
+                const isCorrect = hasCorrectAnswer && answerDiv.querySelector(".correct-answer-checkbox").checked;
+                const status = hasCorrectAnswer ? (isCorrect ? 2 : 1) : 0;
                 answerOptions.push({
                     text: answerText,
                     status: status
                 });
             });
 
-            questions.push({
-                text: text,
+            surveyData.questions.push({
+                text: questionText,
                 answerOptions: answerOptions
             });
         });
-
-        const surveyData = {
-            title: title,
-            questions: questions
-        };
 
         fetch("/surveys/create", {
             method: "POST",
@@ -92,12 +83,22 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(surveyData)
         })
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(err => {
+                        throw new Error(err || "Ошибка при создании анкеты");
+                    });
+                }
+                return response.text();
+            })
             .then(data => {
                 alert(data);
+                surveyForm.reset();
+                questionsContainer.innerHTML = "";
             })
             .catch(error => {
                 console.error("Ошибка:", error);
+                alert("Ошибка при создании анкеты: " + error.message);
             });
-    }
+    });
 });
