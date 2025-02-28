@@ -1,31 +1,32 @@
 package com.example.auth.controller;
 
+import com.example.auth.dto.SurveyRequest;
 import com.example.auth.model.Survey;
 import com.example.auth.service.SurveyService;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/surveys")
+@RequiredArgsConstructor
 public class SurveyController {
+
     private final SurveyService surveyService;
 
-    public SurveyController(SurveyService surveyService) {
-        this.surveyService = surveyService;
-    }
+    @PostMapping("/create")
+    public ResponseEntity<String> createSurvey(
+            @RequestBody SurveyRequest surveyRequest,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
-    @GetMapping("/create-survey")
-    public String showSurveyForm() {
-        return "create-survey";
-    }
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+        }
 
-    @PostMapping("/create-survey")
-    public String createSurvey(@RequestParam("title") String title, Authentication authentication) {
-        String userEmail = authentication.getName(); // Получаем email авторизованного пользователя
-        surveyService.createSurvey(title, userEmail);
-        return "redirect:/"; // После создания перенаправляем на главную
+        Survey survey = surveyService.createSurvey(surveyRequest, userDetails.getUsername());
+        return ResponseEntity.ok("Survey created with ID: " + survey.getId());
     }
 }

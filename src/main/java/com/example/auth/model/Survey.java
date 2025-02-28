@@ -22,6 +22,6 @@ public class Survey {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> questions;
+//    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Question> questions;
 }

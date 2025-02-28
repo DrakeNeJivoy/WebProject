@@ -1,5 +1,6 @@
 com\example\auth\service\QuestionService.class
 com\example\auth\controller\QuestionController.class
+com\example\auth\dto\QuestionRequest.class
 com\example\auth\service\UserService.class
 com\example\auth\model\Survey.class
 com\example\auth\service\SurveyService.class
@@ -15,6 +16,8 @@ com\example\auth\model\Question.class
 com\example\auth\repository\QuestionRepository.class
 com\example\auth\controller\HomeController.class
 com\example\auth\controller\ProfileController.class
+com\example\auth\dto\AnswerOptionRequest.class
+com\example\auth\dto\SurveyRequest.class
 com\example\SpringMailgunApp.class
 com\example\auth\security\SecurityConfig.class
 com\example\auth\model\Response.class

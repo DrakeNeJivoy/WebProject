@@ -20,4 +20,14 @@ public class AnswerOption {
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+
+    private int status; // 0 - без правильного ответа, 1 - неправильный, 2 - правильный
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
 }

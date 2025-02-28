@@ -22,6 +22,6 @@ public class Question {
     @JoinColumn(name = "survey_id", nullable = false)
     private Survey survey;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AnswerOption> answerOptions;
+//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AnswerOption> answerOptions;
 }
